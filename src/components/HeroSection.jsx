@@ -1,14 +1,15 @@
 import {
+  ArrowDown,
   ArrowRight,
   Download,
   Github,
   Linkedin,
   Mail,
-  ArrowDown,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const titles = [
+  'Building Reliable Systems',
   'Full Stack Developer',
   'Passionate about AI/ML',
   'Tech Enthusiast',
