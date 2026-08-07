@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shubhanan-sharma.vercel.app/sitemap.xml

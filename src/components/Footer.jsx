@@ -13,6 +13,7 @@ export const Footer = () => {
       </p>
       <a
         href="#home"
+        aria-label="Back to top"
         className="hidden md:flex group absolute right-8 p-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors"
       >
         <ArrowUp size={20} />

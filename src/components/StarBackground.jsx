@@ -17,18 +17,25 @@ export const StarBackground = () => {
     const numberOfStars = Math.floor(
       (window.innerWidth * window.innerHeight) / 15000
     );
+    // One keyframe per entry in the transition's `times` array, built once
+    // here so the drift path stays stable across re-renders.
+    const drift = (origin, distance) => {
+      const offset = () => `${origin + (Math.random() - 0.5) * distance}%`;
+      return [`${origin}%`, offset(), offset(), offset(), `${origin}%`];
+    };
+
     const newStars = [];
     for (let i = 0; i < numberOfStars; i++) {
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const moveDistance = Math.random() * 50 + 4;
       newStars.push({
         id: i,
         size: Math.random() * 2 + 1,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
         opacity: Math.random() * 0.8 + 0.3,
-        twinkleDuration: Math.random() * 6 + 4,
-        // Movement properties for Framer Motion
-        moveDistance: Math.random() * 50 + 4,
         moveDuration: Math.random() * 15 + 20,
+        driftX: drift(x, moveDistance),
+        driftY: drift(y, moveDistance),
       });
     }
     setStars(newStars);
@@ -40,24 +47,10 @@ export const StarBackground = () => {
         <motion.div
           key={star.id}
           className="star-minimal"
-          initial={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            opacity: star.opacity,
-          }}
+          initial={{ left: star.driftX[0], top: star.driftY[0] }}
           animate={{
-            left: [
-              `${star.x}%`,
-              `${star.x + (Math.random() - 0.5) * star.moveDistance}%`,
-              `${star.x + (Math.random() - 0.5) * star.moveDistance}%`,
-              `${star.x}%`,
-            ],
-            top: [
-              `${star.y}%`,
-              `${star.y + (Math.random() - 0.5) * star.moveDistance}%`,
-              `${star.y + (Math.random() - 0.5) * star.moveDistance}%`,
-              `${star.y}%`,
-            ],
+            left: star.driftX,
+            top: star.driftY,
             opacity: [
               star.opacity,
               star.opacity * 1.2,
@@ -68,7 +61,6 @@ export const StarBackground = () => {
           }}
           transition={{
             duration: star.moveDuration,
-            delay: 0,
             repeat: Infinity,
             ease: "easeInOut",
             times: [0, 0.25, 0.5, 0.75, 1],
@@ -76,7 +68,6 @@ export const StarBackground = () => {
           style={{
             width: star.size + "px",
             height: star.size + "px",
-            position: "absolute",
           }}
         />
       ))}

@@ -31,19 +31,17 @@ export const ContactSection = () => {
 
     try {
       // Send email using EmailJS
-      const result = await emailjs.send(
+      await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         {
           from_name: formData.name,
           from_email: formData.email,
           message: formData.message,
-          to_name: "Your Name", // Replace with your name
+          to_name: "Shubhanan Sharma",
         },
         EMAILJS_PUBLIC_KEY
       );
-
-      console.log("Email sent successfully:", result);
 
       toast({
         title: "Message sent!",
@@ -157,7 +155,7 @@ export const ContactSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.h1
+          <motion.h2
             className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 sm:mb-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -165,7 +163,7 @@ export const ContactSection = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           >
             Contact
-          </motion.h1>
+          </motion.h2>
           <motion.p
             className="text-base sm:text-lg text-foreground/70 leading-relaxed"
             initial={{ opacity: 0 }}
@@ -194,12 +192,9 @@ export const ContactSection = () => {
               className="space-y-3 sm:space-y-4"
               variants={itemVariants}
             >
-              <motion.h2
-                className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground"
-                transition={{ duration: 0.2 }}
-              >
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground">
                 Get in Touch
-              </motion.h2>
+              </h3>
 
               <motion.p
                 className="text-base sm:text-lg text-foreground/70 max-w-xl leading-relaxed"
@@ -231,11 +226,12 @@ export const ContactSection = () => {
                   icon: Mail,
                   label: "Email",
                 },
-                { href: "tel: +919717611259", icon: Phone, label: "Phone" },
+                { href: "tel:+919717611259", icon: Phone, label: "Phone" },
               ].map(({ href, icon: Icon, label }, index) => (
                 <motion.a
                   key={label}
                   href={href}
+                  aria-label={label}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={
                     href.startsWith("http") ? "noopener noreferrer" : undefined
@@ -270,6 +266,7 @@ export const ContactSection = () => {
                   <motion.input
                     type="text"
                     name="name"
+                    aria-label="Your name"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
@@ -288,6 +285,7 @@ export const ContactSection = () => {
                   <motion.input
                     type="email"
                     name="email"
+                    aria-label="Your email address"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
@@ -305,6 +303,7 @@ export const ContactSection = () => {
                 <motion.div variants={inputVariants}>
                   <motion.textarea
                     name="message"
+                    aria-label="Your message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required

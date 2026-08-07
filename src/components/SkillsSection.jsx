@@ -2,10 +2,74 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 const skillsData = {
+  // No `logo` = a concept rather than a product, so there is no mark to show.
+  // `mono: true` = single-colour mark, recoloured to match the theme.
+  'SRE & Infra': [
+    {
+      name: 'AWS',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg',
+    },
+    {
+      name: 'Pulumi',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pulumi/pulumi-original.svg',
+    },
+    { name: 'IaC' },
+    {
+      name: 'Jenkins',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg',
+    },
+    {
+      name: 'GitHub Actions',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg',
+    },
+    {
+      name: 'ArgoCD',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/argocd/argocd-original.svg',
+    },
+    { name: 'CI/CD' },
+    {
+      name: 'Docker',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+    },
+    {
+      name: 'Kubernetes',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg',
+    },
+    {
+      name: 'Grafana',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg',
+    },
+    {
+      name: 'Prometheus',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg',
+    },
+    {
+      name: 'Loki',
+      logo: 'https://raw.githubusercontent.com/grafana/loki/main/docs/sources/logo.png',
+    },
+    {
+      name: 'Datadog',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/datadog/datadog-original.svg',
+    },
+    {
+      name: 'Kong',
+      logo: 'https://cdn.simpleicons.org/kong',
+      mono: true,
+    },
+    {
+      name: 'Nginx',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg',
+    },
+    { name: 'Networking' },
+  ],
   Languages: [
     {
       name: 'Python',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+    },
+    {
+      name: 'Go',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg',
     },
     {
       name: 'JavaScript',
@@ -57,10 +121,7 @@ const skillsData = {
       name: 'React Router',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/reactrouter/reactrouter-original.svg',
     },
-    {
-      name: 'React Query',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/reactquery/reactquery-original.svg',
-    },
+    { name: 'React Query' }, // devicon has no React Query icon; logo is optional
     {
       name: 'React Hooks',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
@@ -86,6 +147,7 @@ const skillsData = {
     {
       name: 'Framer Motion',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/framermotion/framermotion-original.svg',
+      mono: true,
     },
   ],
   Backend: [
@@ -96,6 +158,7 @@ const skillsData = {
     {
       name: 'Express.js',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg',
+      mono: true,
     },
     {
       name: 'Django',
@@ -180,32 +243,21 @@ const skillsData = {
   ],
   'Tools & IDEs': [
     {
+      name: 'Claude Code',
+      logo: 'https://cdn.simpleicons.org/claude',
+    },
+    {
       name: 'Git',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
     },
     {
       name: 'GitHub',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+      mono: true,
     },
     {
-      name: 'Docker',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
-    },
-    {
-      name: 'AWS',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg',
-    },
-    {
-      name: 'EC2',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg',
-    },
-    {
-      name: 'Nginx',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg',
-    },
-    {
-      name: 'Vite',
-      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
+      name: 'Bitbucket',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bitbucket/bitbucket-original.svg',
     },
     {
       name: 'Visual Studio Code',
@@ -222,6 +274,14 @@ const skillsData = {
     {
       name: 'Jupyter Notebook',
       logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg',
+    },
+    {
+      name: 'Vite',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg',
+    },
+    {
+      name: 'tmux',
+      logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tmux/tmux-original.svg',
     },
   ],
   Concepts: [
@@ -362,8 +422,7 @@ const SlideTabs = ({ tabs, activeTab, setActiveTab }) => {
 };
 
 export const SkillsSection = () => {
-  const [activeTab, setActiveTab] = useState('Languages');
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState('SRE & Infra');
   const tabs = Object.keys(skillsData);
 
   // Animation variants
@@ -412,47 +471,6 @@ export const SkillsSection = () => {
       },
     },
   };
-
-  const loadingVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 0.3 },
-    },
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.3 },
-    },
-  };
-
-  // Preload all images when component mounts
-  useEffect(() => {
-    const preloadImages = async () => {
-      const allLogos = Object.values(skillsData)
-        .flat()
-        .map((skill) => skill.logo);
-      const uniqueLogos = [...new Set(allLogos)];
-
-      const imagePromises = uniqueLogos.map((src) => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = resolve;
-          img.onerror = resolve; // Still resolve on error to not block loading
-          img.src = src;
-        });
-      });
-
-      try {
-        await Promise.all(imagePromises);
-        setImagesLoaded(true);
-      } catch (error) {
-        console.warn('Some images failed to preload:', error);
-        setImagesLoaded(true); // Still set to true to show the component
-      }
-    };
-
-    preloadImages();
-  }, []);
 
   return (
     <section
@@ -504,47 +522,35 @@ export const SkillsSection = () => {
           </motion.div>
 
           {/* Skills Content */}
-          <div className="bg-muted/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-h-[180px] sm:min-h-[200px] relative">
+          <div className="p-4 sm:p-6 min-h-[180px] sm:min-h-[200px] relative">
             <AnimatePresence mode="wait">
-              {!imagesLoaded ? (
-                <motion.div
-                  key="loading"
-                  className="flex items-center justify-center py-8 absolute inset-0"
-                  variants={loadingVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <div className="animate-spin rounded-2xl h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary"></div>
-                  <span className="ml-3 text-muted-foreground text-xs sm:text-sm">
-                    Loading skills...
-                  </span>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={activeTab}
-                  className="flex flex-wrap gap-2 sm:gap-3 justify-center"
-                  variants={skillContainerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  {skillsData[activeTab].map((skill, index) => (
-                    <motion.div
-                      key={skill.name}
-                      className="bg-background border rounded-md font-medium text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4 hover:bg-accent transition-all duration-300 flex items-center gap-1.5 sm:gap-2 group cursor-pointer"
-                      variants={skillItemVariants}
-                      whileHover={{
-                        scale: 1.05,
-                        y: -2,
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                    >
+              <motion.div
+                key={activeTab}
+                className="flex flex-wrap gap-2 sm:gap-3 justify-center"
+                variants={skillContainerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {skillsData[activeTab].map((skill) => (
+                  <motion.div
+                    key={skill.name}
+                    className="bg-background border rounded-md font-medium text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4 hover:bg-accent transition-all duration-300 flex items-center gap-1.5 sm:gap-2 group cursor-pointer"
+                    variants={skillItemVariants}
+                    whileHover={{
+                      scale: 1.05,
+                      y: -2,
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {skill.logo && (
                       <motion.img
-                        alt={`${skill.name} logo`}
-                        className="h-4 w-4 sm:h-5 sm:w-5 object-contain"
+                        alt=""
+                        className={`h-4 w-4 sm:h-5 sm:w-5 object-contain${
+                          skill.mono ? ' brightness-0 dark:invert' : ''
+                        }`}
                         src={skill.logo}
-                        loading="eager"
+                        loading="lazy"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
@@ -554,13 +560,13 @@ export const SkillsSection = () => {
                         }}
                         transition={{ duration: 0.2 }}
                       />
-                      <span className="text-foreground whitespace-nowrap text-xs sm:text-sm">
-                        {skill.name}
-                      </span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
+                    )}
+                    <span className="text-foreground whitespace-nowrap text-xs sm:text-sm">
+                      {skill.name}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
             </AnimatePresence>
           </div>
         </div>
@@ -568,5 +574,3 @@ export const SkillsSection = () => {
     </section>
   );
 };
-
-export default SkillsSection;

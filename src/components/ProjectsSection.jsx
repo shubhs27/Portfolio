@@ -125,13 +125,27 @@ const projects = [
   },
 ];
 
+const StatusDot = ({ isOnline, index }) => (
+  <motion.div
+    initial={{ scale: 0 }}
+    animate={{ scale: 1 }}
+    transition={{ duration: 0.2, delay: index * 0.05 + 0.24 }}
+    className={`w-2 h-2 rounded-full ${
+      isOnline ? 'bg-green-500' : 'bg-red-500'
+    }`}
+  />
+);
+
+const isDemoLive = (project) =>
+  project.demoStatus === 'online' && project.demoUrl !== '#';
+
 const ProjectCard = ({ project, index }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{
-      duration: 0.6,
-      delay: index * 0.1,
+      duration: 0.55,
+      delay: index * 0.05,
       ease: [0.25, 0.4, 0.25, 1],
     }}
     className="group bg-card rounded-xl overflow-hidden shadow-sm border border-border hover:border-primary/30 transition-all duration-300 flex flex-col h-full"
@@ -149,13 +163,13 @@ const ProjectCard = ({ project, index }) => (
       className="p-4 sm:p-5 md:p-6 text-left flex flex-col flex-grow"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+      transition={{ duration: 0.25, delay: index * 0.05 + 0.06 }}
     >
       <motion.h3
         className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-left"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+        transition={{ duration: 0.3, delay: index * 0.05 + 0.09 }}
       >
         {project.title}
       </motion.h3>
@@ -163,7 +177,7 @@ const ProjectCard = ({ project, index }) => (
         className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed text-left"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+        transition={{ duration: 0.3, delay: index * 0.05 + 0.12 }}
       >
         {project.description}
       </motion.p>
@@ -172,7 +186,7 @@ const ProjectCard = ({ project, index }) => (
         className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6 justify-start"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
+        transition={{ duration: 0.3, delay: index * 0.05 + 0.15 }}
       >
         {project.tags.map((tag, tagIndex) => (
           <motion.span
@@ -180,15 +194,15 @@ const ProjectCard = ({ project, index }) => (
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-              duration: 0.3,
-              delay: index * 0.1 + 0.6 + tagIndex * 0.05,
+              duration: 0.2,
+              delay: index * 0.05 + 0.18 + tagIndex * 0.02,
               ease: 'easeOut',
             }}
             whileHover={{
               scale: 1.05,
               transition: { duration: 0.2 },
             }}
-            className="bg-secondary text-secondary-foreground text-xs px-2 sm:px-3 py-1 rounded-full border border-border/50"
+            className="text-xs px-2 sm:px-3 py-1 rounded-full border border-border/50"
           >
             {tag}
           </motion.span>
@@ -199,30 +213,39 @@ const ProjectCard = ({ project, index }) => (
         className="flex gap-2 sm:gap-3 justify-start mt-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 + 0.7 }}
+        transition={{ duration: 0.3, delay: index * 0.05 + 0.21 }}
       >
-        <motion.a
-          href={project.demoUrl}
-          whileHover={{
-            scale: 1.05,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            transition: { duration: 0.2 },
-          }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg border border-border hover:border-primary/50 transition-colors group"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3, delay: index * 0.1 + 0.8 }}
-            className={`w-2 h-2 rounded-full ${
-              project.demoStatus === 'online' ? 'bg-green-500' : 'bg-red-500'
-            }`}
-          />
-          Demo
-        </motion.a>
+        {isDemoLive(project) ? (
+          <motion.a
+            href={project.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${project.title} live demo`}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg border border-border hover:border-primary/50 transition-colors group"
+          >
+            <StatusDot isOnline index={index} />
+            Demo
+          </motion.a>
+        ) : (
+          <span
+            title="Demo unavailable"
+            className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg border border-border/50 text-muted-foreground cursor-not-allowed"
+          >
+            <StatusDot isOnline={false} index={index} />
+            Demo
+          </span>
+        )}
         <motion.a
           href={project.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${project.title} source code`}
           whileHover={{
             scale: 1.05,
             boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
@@ -242,33 +265,28 @@ const ProjectCard = ({ project, index }) => (
   </motion.div>
 );
 
-const Carousel = ({ currentIndex, setCurrentIndex, direction }) => {
-  const getCardsToShow = () => {
-    const cardsPerPage =
-      window.innerWidth < 640 ? 1 : window.innerWidth < 768 ? 2 : 3;
-    return cardsPerPage;
-  };
-
+const Carousel = ({ currentIndex, cardsPerPage, direction }) => {
+  // Travel is a percentage of the slide's own width, so it lands exactly one
+  // container over at any viewport. No zIndex: `mode="wait"` below keeps a
+  // single slide mounted, so there is never anything to order against.
   const variants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? '100%' : '-100%',
       opacity: 0,
     }),
     center: {
-      zIndex: 1,
-      x: 0,
+      x: '0%',
       opacity: 1,
     },
     exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? '100%' : '-100%',
       opacity: 0,
     }),
   };
 
   return (
     <div className="relative w-full min-h-[400px] sm:min-h-[500px] lg:min-h-[550px] overflow-hidden">
-      <AnimatePresence initial={false} custom={direction}>
+      <AnimatePresence initial={false} mode="wait" custom={direction}>
         <motion.div
           key={currentIndex}
           custom={direction}
@@ -276,13 +294,10 @@ const Carousel = ({ currentIndex, setCurrentIndex, direction }) => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            x: { type: 'spring', stiffness: 100, damping: 30 },
-            opacity: { duration: 0.6 },
-          }}
+          transition={{ duration: 0.42, ease: 'easeInOut' }}
           className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-2 sm:px-0"
         >
-          {Array.from({ length: getCardsToShow() }).map((_, offset) => {
+          {Array.from({ length: cardsPerPage }).map((_, offset) => {
             const projectIndex = currentIndex + offset;
             if (projectIndex >= projects.length) return null;
             const project = projects[projectIndex];
@@ -308,7 +323,17 @@ export const ProjectsSection = () => {
     const updateCardsPerPage = () => {
       const newCardsPerPage =
         window.innerWidth < 640 ? 1 : window.innerWidth < 768 ? 2 : 3;
-      setCardsPerPage(newCardsPerPage);
+
+      setCardsPerPage((previous) => {
+        // Re-snap to a page boundary, else the indicator and cards disagree.
+        if (newCardsPerPage !== previous) {
+          setCurrentIndex(([index]) => [
+            Math.floor(index / newCardsPerPage) * newCardsPerPage,
+            0,
+          ]);
+        }
+        return newCardsPerPage;
+      });
     };
 
     updateCardsPerPage();
@@ -319,17 +344,25 @@ export const ProjectsSection = () => {
   const totalPages = Math.ceil(projects.length / cardsPerPage);
   const currentPage = Math.floor(currentIndex / cardsPerPage);
 
+  // Both read the page out of committed state rather than the render closure:
+  // clicks landing in one tick would otherwise all compute the same target and
+  // collapse into a single page change. Returning `state` unchanged keeps the
+  // reference identical so React skips the re-render entirely.
   const paginate = (newDirection) => {
-    const newPage = currentPage + newDirection;
-    if (newPage < 0 || newPage >= totalPages) return;
-    const newIndex = newPage * cardsPerPage;
-    setCurrentIndex([newIndex, newDirection]);
+    setCurrentIndex((state) => {
+      const page = Math.floor(state[0] / cardsPerPage);
+      const nextPage = page + newDirection;
+      if (nextPage < 0 || nextPage >= totalPages) return state;
+      return [nextPage * cardsPerPage, newDirection];
+    });
   };
 
   const goToPage = (pageIndex) => {
-    const targetIndex = pageIndex * cardsPerPage;
-    const direction = pageIndex > currentPage ? 1 : -1;
-    setCurrentIndex([targetIndex, direction]);
+    setCurrentIndex((state) => {
+      const page = Math.floor(state[0] / cardsPerPage);
+      if (pageIndex === page) return state;
+      return [pageIndex * cardsPerPage, pageIndex > page ? 1 : -1];
+    });
   };
 
   const canGoPrevious = currentPage > 0;
@@ -383,7 +416,7 @@ export const ProjectsSection = () => {
         >
           <Carousel
             currentIndex={currentIndex}
-            setCurrentIndex={([index, dir]) => setCurrentIndex([index, dir])}
+            cardsPerPage={cardsPerPage}
             direction={direction}
           />
         </motion.div>

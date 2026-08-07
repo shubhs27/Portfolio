@@ -2,9 +2,71 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/ss1.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shubhanan Sharma | Portfolio</title>
+
+    <!-- Applies the theme before first paint so there is no light-mode flash. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored !== 'light') {
+            document.documentElement.classList.add('dark');
+            if (stored !== 'dark') localStorage.setItem('theme', 'dark');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
+    <title>Shubhanan Sharma | Site Reliability Engineer</title>
+    <meta
+      name="description"
+      content="Portfolio of Shubhanan Sharma, a Site Reliability Engineer at CRED working with AWS, Pulumi and CI/CD. Projects across full-stack web, computer vision and data science."
+    />
+    <meta name="author" content="Shubhanan Sharma" />
+    <link rel="canonical" href="https://shubhanan-sharma.vercel.app/" />
+    <meta
+      name="theme-color"
+      content="#f8fafc"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#050810"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <link rel="icon" type="image/jpeg" href="/ss1.jpeg" />
+    <link rel="apple-touch-icon" href="/shubhanan.jpg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://shubhanan-sharma.vercel.app/" />
+    <meta
+      property="og:title"
+      content="Shubhanan Sharma | Site Reliability Engineer"
+    />
+    <meta
+      property="og:description"
+      content="Site Reliability Engineer at CRED. AWS, Pulumi, CI/CD — plus projects across full-stack web, computer vision and data science."
+    />
+    <meta
+      property="og:image"
+      content="https://shubhanan-sharma.vercel.app/shubhanan.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Shubhanan Sharma | Site Reliability Engineer"
+    />
+    <meta
+      name="twitter:description"
+      content="Site Reliability Engineer at CRED. AWS, Pulumi, CI/CD — plus projects across full-stack web, computer vision and data science."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shubhanan-sharma.vercel.app/shubhanan.jpg"
+    />
   </head>
   <body>
     <div id="root"></div>

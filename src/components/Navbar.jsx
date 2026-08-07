@@ -16,68 +16,66 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const storedTheme = localStorage.getItem("theme");
-
-    if (storedTheme === "dark") {
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else if (storedTheme === "light") {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    } else {
-      // first visit: no stored key -> default to dark
-      localStorage.setItem("theme", "dark");
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+  // The inline script in index.html already applied the theme; just read it.
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      typeof document === "undefined" ||
+      document.documentElement.classList.contains("dark")
+  );
 
   const toggleTheme = () => {
-    if (typeof window !== "undefined") {
-      if (isDarkMode) {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-        setIsDarkMode(false);
-      } else {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-        setIsDarkMode(true);
-      }
+    const nextIsDark = !isDarkMode;
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    try {
+      localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+    } catch {
+      // Private-mode browsers can reject writes; the toggle still applies.
     }
+    setIsDarkMode(nextIsDark);
   };
 
   useEffect(() => {
-    const handleScroll = () => {
+    let frame = null;
+
+    const readScrollState = () => {
+      frame = null;
       setIsScrolled(window.scrollY > 10);
 
-      // Check which section is currently in view
-      const sections = navItems.map((item) => item.href.substring(1));
-      const currentSection = sections.find((section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
+      // At the very bottom, the last section wins outright: it can be shorter
+      // than the viewport and so never reach the focus line below.
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4;
+      if (atBottom) {
+        setActiveSection(navItems[navItems.length - 1].name);
+        return;
+      }
 
-      if (currentSection) {
-        const sectionName = navItems.find(
-          (item) => item.href === `#${currentSection}`
-        )?.name;
-        if (sectionName) {
-          setActiveSection(sectionName);
+      // Otherwise: the last section that starts above a line 35% down the
+      // viewport. Height-independent, so short sections still win when centred.
+      const focusLine = window.innerHeight * 0.35;
+      let current = navItems[0].name;
+      for (const item of navItems) {
+        const element = document.getElementById(item.href.substring(1));
+        if (element && element.getBoundingClientRect().top <= focusLine) {
+          current = item.name;
         }
       }
+      setActiveSection(current);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(readScrollState);
+    };
+
+    readScrollState();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   // Close mobile menu when clicking outside or on escape key

@@ -26,18 +26,12 @@ export const EducationSection = () => {
 
         {/* Mobile: Single column, Desktop: Two columns */}
         <div className="flex flex-col md:grid md:grid-cols-2 gap-2 md:gap-12 items-start">
-          {/* B.Tech Degree - Animate from left on desktop, from top on mobile */}
           <motion.div
-            className="p-6 md:p-8 w-full motion-safe:md:[--initial-x:var(--desktop-x)] motion-safe:md:[--initial-y:var(--desktop-y)]"
-            initial={{ opacity: 0, x: 0, y: 50 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            className="p-6 md:p-8 w-full"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
             viewport={{ once: true }}
-            // Different animation for desktop
-            style={{
-              '--desktop-x': '-50px',
-              '--desktop-y': '0px',
-            }}
           >
             <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
               <div className="p-3 rounded-lg bg-primary/10 flex-shrink-0 self-center sm:self-start">
@@ -61,11 +55,10 @@ export const EducationSection = () => {
             </div>
           </motion.div>
 
-          {/* School - Animate from right on desktop, from top on mobile */}
           <motion.div
             className="p-6 md:p-8 w-full"
-            initial={{ opacity: 0, x: 0, y: 50 }}
-            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
             viewport={{ once: true }}
           >
